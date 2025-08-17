@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/hooks/use-toast';
 import { LogOut, Upload, BookOpen, Calendar, MessageSquare, FileText } from 'lucide-react';
+import StudentAssignments from '@/components/StudentAssignments';
 
 interface Mark {
   id: string;
@@ -324,50 +325,11 @@ const StudentDashboard = () => {
           <TabsContent value="assignments">
             <Card>
               <CardHeader>
-                <CardTitle>Your Assignments</CardTitle>
-                <CardDescription>View and upload assignments</CardDescription>
+                <CardTitle>Assignment Center</CardTitle>
+                <CardDescription>View available assignments and submit your work</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {assignments.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No assignments submitted yet.</p>
-                  ) : (
-                    assignments.map((assignment) => (
-                      <div key={assignment.id} className="p-4 border rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h3 className="font-medium">{assignment.title}</h3>
-                            <p className="text-sm text-muted-foreground">{assignment.subjects.name}</p>
-                          </div>
-                          <Badge 
-                            variant={
-                              assignment.status === 'graded' ? 'default' : 
-                              assignment.status === 'returned' ? 'secondary' : 'outline'
-                            }
-                          >
-                            {assignment.status}
-                          </Badge>
-                        </div>
-                        {assignment.description && (
-                          <p className="text-sm mb-2">{assignment.description}</p>
-                        )}
-                        {assignment.grade && (
-                          <div className="text-sm font-medium mb-2">
-                            Grade: {assignment.grade}/100
-                          </div>
-                        )}
-                        {assignment.teacher_comments && (
-                          <div className="text-sm text-muted-foreground mb-2">
-                            Teacher Comments: {assignment.teacher_comments}
-                          </div>
-                        )}
-                        <p className="text-xs text-muted-foreground">
-                          Submitted: {new Date(assignment.submitted_at).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))
-                  )}
-                </div>
+                <StudentAssignments />
               </CardContent>
             </Card>
           </TabsContent>

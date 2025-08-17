@@ -77,12 +77,12 @@ const TeacherAssignments = () => {
         .select('id, name, code')
         .order('name');
 
-      // Fetch assignment posts
+      // Fetch assignment posts with proper join
       const { data: assignmentsData, error: assignmentsError } = await supabase
         .from('assignment_posts')
         .select(`
           id, title, description, subject_id, due_date, max_points, instructions, created_at,
-          subjects (name, code)
+          subjects!assignment_posts_subject_id_fkey (name, code)
         `)
         .order('created_at', { ascending: false });
 
@@ -91,7 +91,7 @@ const TeacherAssignments = () => {
       }
 
       setSubjects(subjectsData || []);
-      setAssignmentPosts(assignmentsData || []);
+      setAssignmentPosts((assignmentsData as any) || []);
     } catch (error) {
       toast({
         title: 'Error',

@@ -51,10 +51,19 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "assignment_posts_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       assignments: {
         Row: {
+          assignment_post_id: string | null
           description: string | null
           file_name: string | null
           file_type: string | null
@@ -67,9 +76,10 @@ export type Database = {
           subject_id: string
           submitted_at: string
           teacher_comments: string | null
-          title: string
+          title: string | null
         }
         Insert: {
+          assignment_post_id?: string | null
           description?: string | null
           file_name?: string | null
           file_type?: string | null
@@ -82,9 +92,10 @@ export type Database = {
           subject_id: string
           submitted_at?: string
           teacher_comments?: string | null
-          title: string
+          title?: string | null
         }
         Update: {
+          assignment_post_id?: string | null
           description?: string | null
           file_name?: string | null
           file_type?: string | null
@@ -97,9 +108,16 @@ export type Database = {
           subject_id?: string
           submitted_at?: string
           teacher_comments?: string | null
-          title?: string
+          title?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "assignments_assignment_post_id_fkey"
+            columns: ["assignment_post_id"]
+            isOneToOne: false
+            referencedRelation: "assignment_posts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "assignments_student_id_fkey"
             columns: ["student_id"]

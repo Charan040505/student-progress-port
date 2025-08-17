@@ -24,14 +24,15 @@ interface AssignmentPost {
 
 interface MySubmission {
   id: string;
-  assignment_post_id: string;
+  assignment_post_id?: string;
   status: string;
-  grade: number;
-  teacher_comments: string;
+  grade?: number;
+  teacher_comments?: string;
   submitted_at: string;
-  file_name: string;
-  file_url: string;
-  description: string;
+  file_name?: string;
+  file_url?: string;
+  description?: string;
+  title?: string;
 }
 
 const StudentAssignments = () => {
@@ -55,12 +56,12 @@ const StudentAssignments = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch available assignment posts
+      // Fetch available assignment posts with proper join
       const { data: assignmentsData, error: assignmentsError } = await supabase
         .from('assignment_posts')
         .select(`
           id, title, description, due_date, max_points, instructions, created_at,
-          subjects (name, code)
+          subjects!assignment_posts_subject_id_fkey (name, code)
         `)
         .order('due_date', { ascending: true });
 
@@ -70,7 +71,7 @@ const StudentAssignments = () => {
 
       const { data: submissionsData, error: submissionsError } = await supabase
         .from('assignments')
-        .select('*')
+        .select('id, assignment_post_id, status, grade, teacher_comments, submitted_at, file_name, file_url, description, title')
         .eq('student_id', user.id)
         .order('submitted_at', { ascending: false });
 
@@ -78,8 +79,8 @@ const StudentAssignments = () => {
         throw new Error('Failed to fetch data');
       }
 
-      setAssignmentPosts(assignmentsData || []);
-      setMySubmissions(submissionsData || []);
+      setAssignmentPosts((assignmentsData as any) || []);
+      setMySubmissions((submissionsData as any) || []);
     } catch (error) {
       toast({
         title: 'Error',
@@ -136,8 +137,8 @@ const StudentAssignments = () => {
           title: selectedAssignment.title,
           description: submissionData.description,
           student_id: user.id,
-          subject_id: selectedAssignment.subjects ? 
-            (assignmentPosts.find(ap => ap.title === selectedAssignment.title)?.subjects as any)?.id || '' : '',
+          subject_id: '', // This will be linked via assignment_post_id
+          assignment_post_id: selectedAssignment.id,
           status: 'submitted',
           file_name: fileName,
           file_url: fileUrl,
@@ -167,7 +168,10 @@ const StudentAssignments = () => {
   };
 
   const getSubmissionForAssignment = (assignmentId: string) => {
-    return mySubmissions.find(sub => sub.title === assignmentPosts.find(ap => ap.id === assignmentId)?.title);
+    return mySubmissions.find(sub => 
+      sub.assignment_post_id === assignmentId || 
+      sub.title === assignmentPosts.find(ap => ap.id === assignmentId)?.title
+    );
   };
 
   const downloadFile = async (fileUrl: string, fileName: string) => {

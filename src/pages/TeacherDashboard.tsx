@@ -6,7 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
-import { LogOut, Users, BookOpen, Calendar, MessageSquare, FileText, GraduationCap } from 'lucide-react';
+import { LogOut, Users, BookOpen, Calendar, MessageSquare, FileText, GraduationCap, ClipboardList } from 'lucide-react';
+import TeacherAttendance from '@/components/TeacherAttendance';
+import TeacherAssignments from '@/components/TeacherAssignments';
 
 interface Student {
   user_id: string;
@@ -210,17 +212,21 @@ const TeacherDashboard = () => {
               <Users className="h-4 w-4" />
               Students
             </TabsTrigger>
+            <TabsTrigger value="attendance" className="flex items-center gap-2">
+              <ClipboardList className="h-4 w-4" />
+              Post Attendance
+            </TabsTrigger>
+            <TabsTrigger value="assignments" className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              Create Assignments
+            </TabsTrigger>
             <TabsTrigger value="marks" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Marks
             </TabsTrigger>
-            <TabsTrigger value="attendance" className="flex items-center gap-2">
+            <TabsTrigger value="submissions" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              Attendance
-            </TabsTrigger>
-            <TabsTrigger value="assignments" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Assignments
+              View Submissions
             </TabsTrigger>
           </TabsList>
 
@@ -255,6 +261,14 @@ const TeacherDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="attendance">
+            <TeacherAttendance />
+          </TabsContent>
+
+          <TabsContent value="assignments">
+            <TeacherAssignments />
           </TabsContent>
 
           <TabsContent value="marks">
@@ -295,47 +309,11 @@ const TeacherDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="attendance">
+          <TabsContent value="submissions">
             <Card>
               <CardHeader>
-                <CardTitle>Attendance Records</CardTitle>
-                <CardDescription>View and manage student attendance</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {attendance.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No attendance records yet.</p>
-                  ) : (
-                    attendance.map((record) => (
-                      <div key={record.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div>
-                          <h3 className="font-medium">{record.profiles.full_name}</h3>
-                          <p className="text-sm text-muted-foreground">{record.subjects.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(record.date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <Badge 
-                          variant={
-                            record.status === 'present' ? 'default' : 
-                            record.status === 'late' ? 'secondary' : 'destructive'
-                          }
-                        >
-                          {record.status}
-                        </Badge>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="assignments">
-            <Card>
-              <CardHeader>
-                <CardTitle>Student Assignments</CardTitle>
-                <CardDescription>Review and grade student submissions</CardDescription>
+                <CardTitle>Student Submissions</CardTitle>
+                <CardDescription>Review and grade student assignment submissions</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
