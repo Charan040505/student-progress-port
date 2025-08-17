@@ -70,7 +70,7 @@ const Auth = () => {
     } else {
       toast({
         title: 'Success',
-        description: 'Account created successfully! Please check your email to verify your account.',
+        description: 'Account created successfully! Please check your email and click the verification link to activate your account before signing in.',
       });
       // Switch to sign in tab
       const signInTab = document.querySelector('[value="signin"]') as HTMLElement;

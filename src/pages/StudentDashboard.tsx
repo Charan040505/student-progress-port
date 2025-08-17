@@ -262,19 +262,26 @@ const StudentDashboard = () => {
           <TabsContent value="attendance">
             <Card>
               <CardHeader>
-                <CardTitle>Attendance Record</CardTitle>
-                <CardDescription>Your attendance across all subjects</CardDescription>
+                <CardTitle>My Attendance Record</CardTitle>
+                <CardDescription>View your attendance records posted by teachers</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {attendance.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No attendance records yet.</p>
+                    <p className="text-muted-foreground text-center py-8">No attendance records posted by teachers yet.</p>
                   ) : (
                     attendance.map((record) => (
                       <div key={record.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div>
                           <h3 className="font-medium">{record.subjects.name}</h3>
-                          <p className="text-sm text-muted-foreground">{new Date(record.date).toLocaleDateString()}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(record.date).toLocaleDateString('en-US', { 
+                              weekday: 'long', 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
+                          </p>
                         </div>
                         <Badge 
                           variant={
@@ -282,7 +289,7 @@ const StudentDashboard = () => {
                             record.status === 'late' ? 'secondary' : 'destructive'
                           }
                         >
-                          {record.status}
+                          {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
                         </Badge>
                       </div>
                     ))

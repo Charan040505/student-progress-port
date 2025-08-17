@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string, role: 'student' | 'teacher') => {
-    const redirectUrl = `${window.location.origin}/`;
+    const redirectUrl = `${window.location.origin}/auth`;
     
     const { error } = await supabase.auth.signUp({
       email,
@@ -90,7 +90,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         data: {
           full_name: fullName,
           role: role
-        }
+        },
+        // Require email confirmation
+        emailRedirectTo: redirectUrl
       }
     });
     return { error };

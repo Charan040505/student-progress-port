@@ -127,7 +127,8 @@ const TeacherAttendance = () => {
         .from('attendance')
         .delete()
         .eq('subject_id', selectedSubject)
-        .eq('date', format(selectedDate, 'yyyy-MM-dd'));
+        .eq('date', format(selectedDate, 'yyyy-MM-dd'))
+        .eq('teacher_id', user.id);
 
       // Insert new attendance records
       const { error } = await supabase
@@ -138,7 +139,7 @@ const TeacherAttendance = () => {
 
       toast({
         title: 'Success',
-        description: 'Attendance saved successfully',
+        description: `Attendance saved successfully for ${format(selectedDate, 'PPP')}`,
       });
     } catch (error) {
       toast({

@@ -176,15 +176,13 @@ const StudentAssignments = () => {
 
   const downloadFile = async (fileUrl: string, fileName: string) => {
     try {
-      const response = await fetch(fileUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      // Create a temporary link element to trigger download
       const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
+      a.href = fileUrl;
+      a.download = fileName || 'assignment-file';
+      a.target = '_blank';
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
       toast({
@@ -379,9 +377,9 @@ const StudentAssignments = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => downloadFile(submission.file_url, submission.file_name)}
+                          onClick={() => downloadFile(submission.file_url!, submission.file_name || 'assignment-file')}
                         >
-                          Download File
+                          📎 Download File
                         </Button>
                       )}
                     </div>
@@ -394,6 +392,12 @@ const StudentAssignments = () => {
                       </div>
                     )}
                     {submission.teacher_comments && (
+                  {submission.file_name && (
+                    <div className="mb-3">
+                      <strong className="text-sm">Attached File:</strong>
+                      <p className="text-sm mt-1 text-blue-600">{submission.file_name}</p>
+                    </div>
+                  )}
                       <div className="text-sm p-3 bg-muted/50 rounded-lg">
                         <strong>Teacher Comments:</strong>
                         <p className="mt-1">{submission.teacher_comments}</p>

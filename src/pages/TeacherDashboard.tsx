@@ -214,26 +214,26 @@ const TeacherDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="attendance" className="flex items-center gap-2">
               <ClipboardList className="h-4 w-4" />
-              Post Attendance
+              Mark Attendance
             </TabsTrigger>
             <TabsTrigger value="assignments" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              Create Assignments
+              Assignment Posts
             </TabsTrigger>
             <TabsTrigger value="marks" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Marks
+              Student Marks
             </TabsTrigger>
             <TabsTrigger value="submissions" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              View Submissions
+              Assignment Submissions
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="students">
             <Card>
               <CardHeader>
-                <CardTitle>All Students</CardTitle>
+                <CardTitle>Student Management</CardTitle>
                 <CardDescription>Manage student information and records</CardDescription>
               </CardHeader>
               <CardContent>
@@ -249,10 +249,10 @@ const TeacherDashboard = () => {
                         </div>
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm">
-                            View Profile
+                            📊 View Progress
                           </Button>
                           <Button variant="outline" size="sm">
-                            Add Marks
+                            ✏️ Add Marks
                           </Button>
                         </div>
                       </div>

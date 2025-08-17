@@ -134,7 +134,7 @@ const TeacherAssignments = () => {
           description: formData.description,
           subject_id: formData.subject_id,
           teacher_id: user.id,
-          due_date: format(formData.due_date, 'yyyy-MM-dd'),
+          due_date: formData.due_date ? format(formData.due_date, 'yyyy-MM-dd') : null,
           max_points: formData.max_points,
           instructions: formData.instructions,
         });
@@ -143,7 +143,7 @@ const TeacherAssignments = () => {
 
       toast({
         title: 'Success',
-        description: 'Assignment created successfully',
+        description: `Assignment "${formData.title}" created successfully and posted for students`,
       });
 
       // Reset form
@@ -313,13 +313,13 @@ const TeacherAssignments = () => {
                     <CardTitle className="text-lg">{assignment.title}</CardTitle>
                     <CardDescription className="flex items-center gap-4 mt-1">
                       <span>{assignment.subjects.name}</span>
-                      <span>Due: {new Date(assignment.due_date).toLocaleDateString()}</span>
+                      <span>Due: {assignment.due_date ? new Date(assignment.due_date).toLocaleDateString() : 'No deadline'}</span>
                       <Badge variant="outline">{assignment.max_points} points</Badge>
                     </CardDescription>
                   </div>
                   <Button variant="outline" size="sm">
                     <Eye className="h-4 w-4 mr-2" />
-                    View Submissions
+                    View Submissions (0)
                   </Button>
                 </div>
               </CardHeader>
@@ -332,6 +332,9 @@ const TeacherAssignments = () => {
                     <strong>Instructions:</strong> {assignment.instructions}
                   </div>
                 )}
+                <div className="mt-3 text-xs text-muted-foreground">
+                  Posted: {new Date(assignment.created_at).toLocaleDateString()}
+                </div>
               </CardContent>
             </Card>
           ))
