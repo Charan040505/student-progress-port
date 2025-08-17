@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      assignment_posts: {
+        Row: {
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          instructions: string | null
+          max_points: number | null
+          subject_id: string
+          teacher_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          instructions?: string | null
+          max_points?: number | null
+          subject_id: string
+          teacher_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          instructions?: string | null
+          max_points?: number | null
+          subject_id?: string
+          teacher_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       assignments: {
         Row: {
           description: string | null
